@@ -40,6 +40,7 @@ namespace AddressBookManagement
                         break;
                     case 5:
                         // Add multiple persons
+                        books.AddMultipleContacts();
                         break;
                     case 6:
                         // Multi Addressbooks

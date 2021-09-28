@@ -118,7 +118,18 @@ namespace AddressBookManagement
                 if (item.FirstName.ToLower() == contactToDel)
                 {
                     newContact.Remove(item);
+                    break;
                 }
+            }
+        }
+        public void AddMultipleContacts()
+        {
+            Console.WriteLine("Enter the number of contacts to be added: ");
+            int numberOfContacts = Convert.ToInt32(Console.ReadLine());
+            while (numberOfContacts > 0)
+            {
+                CreateContact();
+                numberOfContacts--;
             }
         }
     }
