@@ -21,13 +21,17 @@ namespace AddressBookManagement
                 {
                     case 1:
                         books.CreateContact();
+                        books.Display();
                         break;
                     case 2:
                         // Add new Contact
-                        new AddressBooks().AddNewContact(books);
+                        books.AddNewContact();
+                        books.Display();
                         break;
                     case 3:
                         // Edit contact by name
+                        books.EditContact();
+                        books.Display();
                         break;
                     case 4:
                         // Delete contact
