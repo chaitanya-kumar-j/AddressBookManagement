@@ -132,5 +132,24 @@ namespace AddressBookManagement
                 numberOfContacts--;
             }
         }
+        // Dictionary<string> addressBooks = new Dictionary<string>();
+        public void MultiAddressBook()
+        {
+            Console.WriteLine("Select and enter to add new addressbook or to exit");
+            int selectOption = Convert.ToInt32(Console.ReadLine());
+            switch (selectOption)
+            {
+                case 1:
+                    Console.WriteLine("Enter name of the owner of this address book:");
+                    string ownerName = Console.ReadLine();
+                    AddressBooks books = new AddressBooks();
+                    books.AddMultipleContacts();
+                    books.Display();
+                    // addressBooks.Add(ownerName, );
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 }
