@@ -109,5 +109,17 @@ namespace AddressBookManagement
                 }
             }
         }
+        public void DeleteContact()
+        {
+            Console.WriteLine("Enter the first name of contact which you want to delete.");
+            string contactToDel = Console.ReadLine().ToLower();
+            foreach(var item in newContact)
+            {
+                if (item.FirstName.ToLower() == contactToDel)
+                {
+                    newContact.Remove(item);
+                }
+            }
+        }
     }
 }

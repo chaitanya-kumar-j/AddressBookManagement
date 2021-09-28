@@ -35,6 +35,8 @@ namespace AddressBookManagement
                         break;
                     case 4:
                         // Delete contact
+                        books.DeleteContact();
+                        books.Display();
                         break;
                     case 5:
                         // Add multiple persons
