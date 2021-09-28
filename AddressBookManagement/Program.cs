@@ -24,6 +24,7 @@ namespace AddressBookManagement
                         break;
                     case 2:
                         // Add new Contact
+                        new AddressBooks().AddNewContact(books);
                         break;
                     case 3:
                         // Edit contact by name
