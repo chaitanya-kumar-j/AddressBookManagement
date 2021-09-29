@@ -44,7 +44,7 @@ namespace AddressBookManagement
                         break;
                     case 6:
                         // Multi Addressbooks
-                        
+                        new AddressBooks().MultiAddressBook();
                         break;
                     default:
                         // exit program

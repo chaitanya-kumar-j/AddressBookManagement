@@ -132,23 +132,23 @@ namespace AddressBookManagement
                 numberOfContacts--;
             }
         }
-        // Dictionary<string> addressBooks = new Dictionary<string>();
         public void MultiAddressBook()
         {
-            Console.WriteLine("Select and enter to add new addressbook or to exit");
-            int selectOption = Convert.ToInt32(Console.ReadLine());
-            switch (selectOption)
+            Dictionary<string, List<Contact>> addressBooks = new Dictionary<string, List<Contact>>();
+            Console.WriteLine("Howmany number of address books you want to add? ");
+            int numberOfBooks = Convert.ToInt32(Console.ReadLine());
+            while (numberOfBooks>0)
             {
-                case 1:
-                    Console.WriteLine("Enter name of the owner of this address book:");
-                    string ownerName = Console.ReadLine();
-                    AddressBooks books = new AddressBooks();
-                    books.AddMultipleContacts();
-                    books.Display();
-                    // addressBooks.Add(ownerName, );
-                    break;
-                default:
-                    break;
+                Console.WriteLine("Enter name of the owner of this address book:");
+                string ownerName = Console.ReadLine();
+                AddressBooks books = new AddressBooks();
+                books.AddMultipleContacts();
+                addressBooks.Add(ownerName, newContact);
+                numberOfBooks--;
+            }
+            foreach(KeyValuePair<string, List<Contact>> keyValuePair in addressBooks)
+            {
+                Console.WriteLine($"{keyValuePair.Key}\n{keyValuePair.Value}");
             }
         }
     }
