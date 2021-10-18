@@ -134,7 +134,7 @@ namespace AddressBookManagement
         }
         public void MultiAddressBook()
         {
-            Dictionary<string, List<Contact>> addressBooks = new Dictionary<string, List<Contact>>();
+            Dictionary<string, AddressBooks> addressBooks = new Dictionary<string, AddressBooks>();
             Console.WriteLine("Howmany number of address books you want to add? ");
             int numberOfBooks = Convert.ToInt32(Console.ReadLine());
             while (numberOfBooks>0)
@@ -143,12 +143,14 @@ namespace AddressBookManagement
                 string ownerName = Console.ReadLine();
                 AddressBooks books = new AddressBooks();
                 books.AddMultipleContacts();
-                addressBooks.Add(ownerName, newContact);
+                addressBooks.Add(ownerName, books);
                 numberOfBooks--;
             }
-            foreach(KeyValuePair<string, List<Contact>> keyValuePair in addressBooks)
+            foreach(KeyValuePair<string, AddressBooks> keyValuePair in addressBooks)
             {
-                Console.WriteLine($"{keyValuePair.Key}\n{keyValuePair.Value}");
+                Console.WriteLine($"Contacts in {keyValuePair.Key} are: ");
+                keyValuePair.Value.Display();
+                List<Contact> a = keyValuePair.Value.newContact.FindAll(x => x.FirstName == "asdf");
             }
         }
     }
