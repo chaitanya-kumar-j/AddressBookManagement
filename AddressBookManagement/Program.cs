@@ -15,7 +15,8 @@ namespace AddressBookManagement
                 Console.WriteLine(" Select and enter query number: \n" +
                     "(1. Create contact list, 2. Add new contact, 3. Edit existing contact,\n " +
                     "4. Delete contact by person name, 5. Add Multiple persons, " +
-                    "6. Multiple addressbooks with unique name,\n 7. Ensure no duplicate contact, 8. Search contacts by City or State)");
+                    "6. Multiple addressbooks with unique name,\n 7. Ensure no duplicate contact, 8. Search contacts by City or State,\n " +
+                    "9. Search a person from a city or state)");
                 int selectProgram = Convert.ToInt32(Console.ReadLine());
                 switch (selectProgram)
                 {
@@ -55,6 +56,12 @@ namespace AddressBookManagement
                         books.MultiAddressBook();
                         books.SearchByCity("Hyd");
                         books.SearchByState("TN");
+                        break;
+                    case 9:
+                        // Multi Addressbooks
+                        books.MultiAddressBook();
+                        books.SearchByCityAndFirstName("Hyd", "Chaitanya");
+                        books.SearchByStateAndFirstName("TN", "Chaitanya");
                         break;
                     default:
                         // exit program
