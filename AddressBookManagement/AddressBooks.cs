@@ -8,37 +8,47 @@ namespace AddressBookManagement
     {
         // create empty list of contact
         List<Contact> newContact = new List<Contact>();
+        Dictionary<string, AddressBooks> addressBooks = new Dictionary<string, AddressBooks>();
 
         // method to create new contact
         public void CreateContact()
         {
-            Contact contact = new Contact();
-
             Console.WriteLine("Enter the first name of the contact: ");
-            contact.FirstName = Console.ReadLine();
+            string firstName = Console.ReadLine();
+            List<Contact> newContact1 = newContact.FindAll(x => x.FirstName == firstName);
+            if (newContact1.Count != 0)
+            {
+                Console.WriteLine($"Contact with the first name as {firstName} is already exists.\n");
+                return;
+            }
+            else
+            {
+                Contact contact = new Contact();
+                contact.FirstName = firstName;
+                Console.WriteLine("Enter the second name of the contact: ");
+                contact.SecondName = Console.ReadLine();
 
-            Console.WriteLine("Enter the second name of the contact: ");
-            contact.SecondName = Console.ReadLine();
+                Console.WriteLine("Enter the Address of the contact seperated by comma: ");
+                contact.Address = Console.ReadLine();
 
-            Console.WriteLine("Enter the Address of the contact seperated by comma: ");
-            contact.Address = Console.ReadLine();
+                Console.WriteLine("Enter the City of the contact: ");
+                contact.City = Console.ReadLine();
 
-            Console.WriteLine("Enter the City of the contact: ");
-            contact.City = Console.ReadLine();
+                Console.WriteLine("Enter the State of the contact: ");
+                contact.State = Console.ReadLine();
 
-            Console.WriteLine("Enter the State of the contact: ");
-            contact.State = Console.ReadLine();
+                Console.WriteLine("Enter the Zip of the contact: ");
+                contact.ZipCode = Convert.ToInt32(Console.ReadLine());
 
-            Console.WriteLine("Enter the Zip of the contact: ");
-            contact.ZipCode = Convert.ToInt32(Console.ReadLine());
+                Console.WriteLine("Enter the Phone number of the contact: ");
+                contact.PhoneNumber = Convert.ToInt32(Console.ReadLine());
 
-            Console.WriteLine("Enter the Phone number of the contact: ");
-            contact.PhoneNumber = Convert.ToInt32(Console.ReadLine());
-
-            Console.WriteLine("Enter the email id of the contact: ");
-            contact.Email = Console.ReadLine();
-            newContact.Add(contact);
+                Console.WriteLine("Enter the email id of the contact: ");
+                contact.Email = Console.ReadLine();
+                newContact.Add(contact);
+            }
         }
+        // method to display all contacts in an address book
         public void Display()
         {
             foreach(var item in newContact)
@@ -48,10 +58,12 @@ namespace AddressBookManagement
                     $"Phone number: {item.PhoneNumber}\nEmail id: {item.Email}");
             }
         }
+        // method to add new contact to an address book
         public void AddNewContact()
         {
             CreateContact();
         }
+        // method to edit the data of a contact of an address book
         public void EditContact()
         {
             Console.WriteLine("Enter the first name of the contact you want to Edit.");
@@ -109,6 +121,7 @@ namespace AddressBookManagement
                 }
             }
         }
+        // method to delete the contact of an address book
         public void DeleteContact()
         {
             Console.WriteLine("Enter the first name of contact which you want to delete.");
@@ -122,6 +135,7 @@ namespace AddressBookManagement
                 }
             }
         }
+        // method to add multiple contacts at a tome to an address book
         public void AddMultipleContacts()
         {
             Console.WriteLine("Enter the number of contacts to be added: ");
@@ -132,9 +146,9 @@ namespace AddressBookManagement
                 numberOfContacts--;
             }
         }
+        // method to add multiple address books at a time
         public void MultiAddressBook()
         {
-            Dictionary<string, AddressBooks> addressBooks = new Dictionary<string, AddressBooks>();
             Console.WriteLine("Howmany number of address books you want to add? ");
             int numberOfBooks = Convert.ToInt32(Console.ReadLine());
             while (numberOfBooks>0)
@@ -151,6 +165,40 @@ namespace AddressBookManagement
                 Console.WriteLine($"Contacts in {keyValuePair.Key} are: ");
                 keyValuePair.Value.Display();
                 List<Contact> a = keyValuePair.Value.newContact.FindAll(x => x.FirstName == "asdf");
+            }
+        }
+        // method to find contact from addressbook
+        public bool SearchContactInAddressBook(string contactName)
+        {
+            foreach(Contact contact in newContact)
+            {
+                if(contact.FirstName == contactName)
+                {
+                    Console.WriteLine("Contact found...");
+                    return true;
+                }
+            }
+            Console.WriteLine("Contact not found in the address book.");
+            return false;
+        }
+        // method to search a contact in particular address book
+        public bool SearchContactInMultiAddressBook(string owner, string contactName)
+        {
+            if (addressBooks.ContainsKey(owner))
+            {
+                if (addressBooks[owner].SearchContactInAddressBook(contactName))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                Console.WriteLine("Multi address book don't have the address book with given owner name.");
+                return false;
             }
         }
     }

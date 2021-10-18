@@ -12,10 +12,10 @@ namespace AddressBookManagement
             while (isRun)
             {
                 Console.WriteLine(" Hello World!...\n Welcome to address book management system!....");
-                Console.WriteLine(" Select and enter query number: " +
-                    "(1. Create contact list, 2. Add new contact, 3. Edit existing contact, " +
+                Console.WriteLine(" Select and enter query number: \n" +
+                    "(1. Create contact list, 2. Add new contact, 3. Edit existing contact,\n " +
                     "4. Delete contact by person name, 5. Add Multiple persons, " +
-                    "6. Multiple addressbooks with unique name)");
+                    "6. Multiple addressbooks with unique name,\n 7. Ensure no duplicate contact)\n");
                 int selectProgram = Convert.ToInt32(Console.ReadLine());
                 switch (selectProgram)
                 {
@@ -43,6 +43,10 @@ namespace AddressBookManagement
                         books.AddMultipleContacts();
                         break;
                     case 6:
+                        // Multi Addressbooks
+                        books.MultiAddressBook();
+                        break;
+                    case 7:
                         // Multi Addressbooks
                         books.MultiAddressBook();
                         break;
