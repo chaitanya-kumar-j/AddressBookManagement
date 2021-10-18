@@ -8,7 +8,11 @@ namespace AddressBookManagement
     {
         // create empty list of contact
         List<Contact> newContact = new List<Contact>();
+        List<string> cityList = new List<string>();
+        List<string> stateList = new List<string>();
         Dictionary<string, AddressBooks> addressBooks = new Dictionary<string, AddressBooks>();
+        Dictionary<string, Dictionary<string, List<Contact>>> citywiseAddressBooks = new Dictionary<string, Dictionary<string, List<Contact>>>();
+        Dictionary<string, Dictionary<string, List<Contact>>> statewiseAddressBooks = new Dictionary<string, Dictionary<string, List<Contact>>>();
 
         // method to create new contact
         public void CreateContact()
@@ -33,9 +37,17 @@ namespace AddressBookManagement
 
                 Console.WriteLine("Enter the City of the contact: ");
                 contact.City = Console.ReadLine();
+                if (!cityList.Contains(contact.City))
+                {
+                    this.cityList.Add(contact.City);
+                }
 
                 Console.WriteLine("Enter the State of the contact: ");
                 contact.State = Console.ReadLine();
+                if (!stateList.Contains(contact.State))
+                {
+                    this.stateList.Add(contact.State);
+                }
 
                 Console.WriteLine("Enter the Zip of the contact: ");
                 contact.ZipCode = Convert.ToInt32(Console.ReadLine());
@@ -158,13 +170,26 @@ namespace AddressBookManagement
                 AddressBooks books = new AddressBooks();
                 books.AddMultipleContacts();
                 addressBooks.Add(ownerName, books);
+                foreach(string city in books.cityList)
+                {
+                    List<Contact> cityData = books.newContact.FindAll(c => c.City == city);
+                    Dictionary<string, List<Contact>> keyValues = new Dictionary<string, List<Contact>>();
+                    keyValues.Add(ownerName, cityData);
+                    citywiseAddressBooks.Add(city, keyValues);
+                }
+                foreach (string state in books.stateList)
+                {
+                    List<Contact> stateData = books.newContact.FindAll(c => c.State == state);
+                    Dictionary<string, List<Contact>> keyValues = new Dictionary<string, List<Contact>>();
+                    keyValues.Add(ownerName, stateData);
+                    statewiseAddressBooks.Add(state, keyValues);
+                }
                 numberOfBooks--;
             }
             foreach(KeyValuePair<string, AddressBooks> keyValuePair in addressBooks)
             {
                 Console.WriteLine($"Contacts in {keyValuePair.Key} are: ");
                 keyValuePair.Value.Display();
-                List<Contact> a = keyValuePair.Value.newContact.FindAll(x => x.FirstName == "asdf");
             }
         }
         // method to find contact from addressbook
@@ -199,6 +224,46 @@ namespace AddressBookManagement
             {
                 Console.WriteLine("Multi address book don't have the address book with given owner name.");
                 return false;
+            }
+        }
+        public void SearchByCity(string city)
+        {
+            if (citywiseAddressBooks.ContainsKey(city))
+            {
+                foreach(string owner in citywiseAddressBooks[city].Keys)
+                {
+                    Console.WriteLine($"Contacts in {owner}'s address book from {city} city are: ");
+                    foreach(Contact contact in citywiseAddressBooks[city][owner])
+                    {
+                        Console.WriteLine($"First Name: {contact.FirstName}\nLast Name: {contact.SecondName}\n" +
+                        $"Address: {contact.Address}\nCity: {contact.City}\nState: {contact.State}\nZipCode: {contact.ZipCode}\n" +
+                        $"Phone number: {contact.PhoneNumber}\nEmail id: {contact.Email}");
+                    }
+                }
+            }
+            else
+            {
+                Console.WriteLine($"There is no contact from the city, {city}");
+            }
+        }
+        public void SearchByState(string state)
+        {
+            if (statewiseAddressBooks.ContainsKey(state))
+            {
+                foreach (string owner in statewiseAddressBooks[state].Keys)
+                {
+                    Console.WriteLine($"Contacts in {owner}'s address book from {state} state are: ");
+                    foreach (Contact contact in statewiseAddressBooks[state][owner])
+                    {
+                        Console.WriteLine($"First Name: {contact.FirstName}\nLast Name: {contact.SecondName}\n" +
+                        $"Address: {contact.Address}\nCity: {contact.City}\nState: {contact.State}\nZipCode: {contact.ZipCode}\n" +
+                        $"Phone number: {contact.PhoneNumber}\nEmail id: {contact.Email}");
+                    }
+                }
+            }
+            else
+            {
+                Console.WriteLine($"There is no contact from the state, {state}");
             }
         }
     }
