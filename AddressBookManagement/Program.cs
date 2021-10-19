@@ -16,7 +16,7 @@ namespace AddressBookManagement
                     "(1. Create contact list, 2. Add new contact, 3. Edit existing contact,\n " +
                     "4. Delete contact by person name, 5. Add Multiple persons, " +
                     "6. Multiple addressbooks with unique name,\n 7. Ensure no duplicate contact, 8. Search contacts by City or State,\n " +
-                    "9. Search a person from a city or state)");
+                    "9. Search a person from a city or state, 10. count of contacts by city or state,\n 11. Sort Address Book By FirstName)");
                 int selectProgram = Convert.ToInt32(Console.ReadLine());
                 switch (selectProgram)
                 {
@@ -26,7 +26,7 @@ namespace AddressBookManagement
                         break;
                     case 2:
                         // Add new Contact
-                        books.AddNewContact();
+                        books.AddlistOfContacts();
                         books.Display();
                         break;
                     case 3:
@@ -62,6 +62,17 @@ namespace AddressBookManagement
                         books.MultiAddressBook();
                         books.SearchByCityAndFirstName("Hyd", "Chaitanya");
                         books.SearchByStateAndFirstName("TN", "Chaitanya");
+                        break;
+                    case 10:
+                        // Multi Addressbooks
+                        books.MultiAddressBook();
+                        books.CountByCity("Hyd");
+                        books.CountByState("TN");
+                        break;
+                    case 11:
+                        // Multi Addressbooks
+                        books.MultiAddressBook();
+                        books.SortAddressBookByFirstName();
                         break;
                     default:
                         // exit program

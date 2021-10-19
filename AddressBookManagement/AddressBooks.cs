@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace AddressBookManagement
@@ -7,7 +8,7 @@ namespace AddressBookManagement
     public class AddressBooks
     {
         // create empty list of contact
-        List<Contact> newContact = new List<Contact>();
+        List<Contact> listOfContacts = new List<Contact>();
         List<string> cityList = new List<string>();
         List<string> stateList = new List<string>();
         Dictionary<string, AddressBooks> addressBooks = new Dictionary<string, AddressBooks>();
@@ -19,8 +20,8 @@ namespace AddressBookManagement
         {
             Console.WriteLine("Enter the first name of the contact: ");
             string firstName = Console.ReadLine();
-            List<Contact> newContact1 = newContact.FindAll(x => x.FirstName == firstName);
-            if (newContact1.Count != 0)
+            List<Contact> listOfContacts1 = listOfContacts.FindAll(x => x.FirstName == firstName);
+            if (listOfContacts1.Count != 0)
             {
                 Console.WriteLine($"Contact with the first name as {firstName} is already exists.\n");
                 return;
@@ -57,21 +58,21 @@ namespace AddressBookManagement
 
                 Console.WriteLine("Enter the email id of the contact: ");
                 contact.Email = Console.ReadLine();
-                newContact.Add(contact);
+                listOfContacts.Add(contact);
             }
         }
         // method to display all contacts in an address book
         public void Display()
         {
-            foreach(var item in newContact)
+            foreach(var item in listOfContacts)
             {
                 Console.WriteLine($"First Name: {item.FirstName}\nLast Name: {item.SecondName}\n" +
                     $"Address: {item.Address}\nCity: {item.City}\nState: {item.State}\nZipCode: {item.ZipCode}\n" +
-                    $"Phone number: {item.PhoneNumber}\nEmail id: {item.Email}");
+                    $"Phone number: {item.PhoneNumber}\nEmail id: {item.Email}\n");
             }
         }
         // method to add new contact to an address book
-        public void AddNewContact()
+        public void AddlistOfContacts()
         {
             CreateContact();
         }
@@ -80,7 +81,7 @@ namespace AddressBookManagement
         {
             Console.WriteLine("Enter the first name of the contact you want to Edit.");
             string firstNameToEdit = Console.ReadLine().ToLower();
-            foreach(var item in newContact)
+            foreach(var item in listOfContacts)
             {
                 if (item.FirstName.ToLower() == firstNameToEdit)
                 {
@@ -138,11 +139,11 @@ namespace AddressBookManagement
         {
             Console.WriteLine("Enter the first name of contact which you want to delete.");
             string contactToDel = Console.ReadLine().ToLower();
-            foreach(var item in newContact)
+            foreach(var item in listOfContacts)
             {
                 if (item.FirstName.ToLower() == contactToDel)
                 {
-                    newContact.Remove(item);
+                    listOfContacts.Remove(item);
                     break;
                 }
             }
@@ -178,7 +179,7 @@ namespace AddressBookManagement
                     addressBooks.Add(ownerName, books);
                     foreach (string city in books.cityList)
                     {
-                        List<Contact> cityData = books.newContact.FindAll(c => c.City == city);
+                        List<Contact> cityData = books.listOfContacts.FindAll(c => c.City == city);
                         Dictionary<string, List<Contact>> keyValues = new Dictionary<string, List<Contact>>();
                         keyValues.Add(ownerName, cityData);
                         if (citywiseAddressBooks.ContainsKey(city))
@@ -195,7 +196,7 @@ namespace AddressBookManagement
                     }
                     foreach (string state in books.stateList)
                     {
-                        List<Contact> stateData = books.newContact.FindAll(c => c.State == state);
+                        List<Contact> stateData = books.listOfContacts.FindAll(c => c.State == state);
                         Dictionary<string, List<Contact>> keyValues = new Dictionary<string, List<Contact>>();
                         keyValues.Add(ownerName, stateData);
                         statewiseAddressBooks[state] = keyValues;
@@ -212,7 +213,7 @@ namespace AddressBookManagement
         // method to find contact from addressbook
         public bool SearchContactInAddressBook(string contactName)
         {
-            foreach(Contact contact in newContact)
+            foreach(Contact contact in listOfContacts)
             {
                 if(contact.FirstName == contactName)
                 {
@@ -254,7 +255,7 @@ namespace AddressBookManagement
                     {
                         Console.WriteLine($"First Name: {contact.FirstName}\nLast Name: {contact.SecondName}\n" +
                         $"Address: {contact.Address}\nCity: {contact.City}\nState: {contact.State}\nZipCode: {contact.ZipCode}\n" +
-                        $"Phone number: {contact.PhoneNumber}\nEmail id: {contact.Email}");
+                        $"Phone number: {contact.PhoneNumber}\nEmail id: {contact.Email}\n");
                     }
                 }
             }
@@ -274,7 +275,7 @@ namespace AddressBookManagement
                     {
                         Console.WriteLine($"First Name: {contact.FirstName}\nLast Name: {contact.SecondName}\n" +
                         $"Address: {contact.Address}\nCity: {contact.City}\nState: {contact.State}\nZipCode: {contact.ZipCode}\n" +
-                        $"Phone number: {contact.PhoneNumber}\nEmail id: {contact.Email}");
+                        $"Phone number: {contact.PhoneNumber}\nEmail id: {contact.Email}\n");
                     }
                 }
             }
@@ -295,7 +296,7 @@ namespace AddressBookManagement
                     {
                         Console.WriteLine($"First Name: {contact.FirstName}\nLast Name: {contact.SecondName}\n" +
                         $"Address: {contact.Address}\nCity: {contact.City}\nState: {contact.State}\nZipCode: {contact.ZipCode}\n" +
-                        $"Phone number: {contact.PhoneNumber}\nEmail id: {contact.Email}");
+                        $"Phone number: {contact.PhoneNumber}\nEmail id: {contact.Email}\n");
                     }
                     else
                     {
@@ -320,7 +321,7 @@ namespace AddressBookManagement
                     {
                         Console.WriteLine($"First Name: {contact.FirstName}\nLast Name: {contact.SecondName}\n" +
                         $"Address: {contact.Address}\nCity: {contact.City}\nState: {contact.State}\nZipCode: {contact.ZipCode}\n" +
-                        $"Phone number: {contact.PhoneNumber}\nEmail id: {contact.Email}");
+                        $"Phone number: {contact.PhoneNumber}\nEmail id: {contact.Email}\n");
                     }
                     else
                     {
@@ -365,6 +366,19 @@ namespace AddressBookManagement
             else
             {
                 Console.WriteLine($"There is no contact from the state, {state}");
+            }
+        }
+        public void SortAddressBookByFirstName()
+        {
+            foreach(KeyValuePair<string, AddressBooks> keyValuePair in addressBooks.OrderBy(kvp => kvp.Key))
+            {
+                Console.WriteLine($"Contacts in {keyValuePair.Key} after sorting by first name are: ");
+                foreach (var item in keyValuePair.Value.listOfContacts.OrderBy(x => x.FirstName))
+                {
+                    Console.WriteLine($"First Name: {item.FirstName}\nLast Name: {item.SecondName}\n" +
+                        $"Address: {item.Address}\nCity: {item.City}\nState: {item.State}\nZipCode: {item.ZipCode}\n" +
+                        $"Phone number: {item.PhoneNumber}\nEmail id: {item.Email}\n");
+                }
             }
         }
     }
