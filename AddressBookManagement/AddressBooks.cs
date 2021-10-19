@@ -333,6 +333,39 @@ namespace AddressBookManagement
                 Console.WriteLine($"There is no contact from the state, {state}");
             }
         }
-
+        public void CountByCity(string city)
+        {
+            if (citywiseAddressBooks.ContainsKey(city))
+            {
+                int count = 0;
+                foreach(var key in citywiseAddressBooks[city].Keys)
+                {
+                    count += citywiseAddressBooks[city][key].Count;
+                }
+                Console.WriteLine($"Number of contacts in {city} city are: {count}");
+                Console.WriteLine($"Number of contacts in {city} city are: {citywiseAddressBooks[city].Values.Count}");
+            }
+            else
+            {
+                Console.WriteLine($"There is no contact from the city, {city}");
+            }
+        }
+        public void CountByState(string state)
+        {
+            if (statewiseAddressBooks.ContainsKey(state))
+            {
+                int count = 0;
+                foreach (var key in statewiseAddressBooks[state].Keys)
+                {
+                    count += statewiseAddressBooks[state][key].Count;
+                }
+                Console.WriteLine($"Number of contacts in {state} state are: {count}");
+                Console.WriteLine($"Number of contacts in {state} state are: {citywiseAddressBooks[state].Values.Count}");
+            }
+            else
+            {
+                Console.WriteLine($"There is no contact from the state, {state}");
+            }
+        }
     }
 }
