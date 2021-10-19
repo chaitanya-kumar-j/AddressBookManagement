@@ -381,5 +381,44 @@ namespace AddressBookManagement
                 }
             }
         }
+        public void SortAddressBookByCity()
+        {
+            foreach (KeyValuePair<string, AddressBooks> keyValuePair in addressBooks.OrderBy(kvp => kvp.Key))
+            {
+                Console.WriteLine($"Contacts in {keyValuePair.Key} after sorting by City are: ");
+                foreach (var item in keyValuePair.Value.listOfContacts.OrderBy(x => x.City))
+                {
+                    Console.WriteLine($"First Name: {item.FirstName}\nLast Name: {item.SecondName}\n" +
+                        $"Address: {item.Address}\nCity: {item.City}\nState: {item.State}\nZipCode: {item.ZipCode}\n" +
+                        $"Phone number: {item.PhoneNumber}\nEmail id: {item.Email}\n");
+                }
+            }
+        }
+        public void SortAddressBookByState()
+        {
+            foreach (KeyValuePair<string, AddressBooks> keyValuePair in addressBooks.OrderBy(kvp => kvp.Key))
+            {
+                Console.WriteLine($"Contacts in {keyValuePair.Key} after sorting by State are: ");
+                foreach (var item in keyValuePair.Value.listOfContacts.OrderBy(x => x.State))
+                {
+                    Console.WriteLine($"First Name: {item.FirstName}\nLast Name: {item.SecondName}\n" +
+                        $"Address: {item.Address}\nCity: {item.City}\nState: {item.State}\nZipCode: {item.ZipCode}\n" +
+                        $"Phone number: {item.PhoneNumber}\nEmail id: {item.Email}\n");
+                }
+            }
+        }
+        public void SortAddressBookByZipCode()
+        {
+            foreach (KeyValuePair<string, AddressBooks> keyValuePair in addressBooks.OrderBy(kvp => kvp.Key))
+            {
+                Console.WriteLine($"Contacts in {keyValuePair.Key} after sorting by ZipCode are: ");
+                foreach (var item in keyValuePair.Value.listOfContacts.OrderBy(x => x.ZipCode))
+                {
+                    Console.WriteLine($"First Name: {item.FirstName}\nLast Name: {item.SecondName}\n" +
+                        $"Address: {item.Address}\nCity: {item.City}\nState: {item.State}\nZipCode: {item.ZipCode}\n" +
+                        $"Phone number: {item.PhoneNumber}\nEmail id: {item.Email}\n");
+                }
+            }
+        }
     }
 }
