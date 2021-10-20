@@ -18,7 +18,8 @@ namespace AddressBookManagement
                     "4. Delete contact by person name, 5. Add Multiple persons, " +
                     "6. Multiple addressbooks with unique name,\n 7. Ensure no duplicate contact, 8. Search contacts by City or State,\n " +
                     "9. Search a person from a city or state, 10. count of contacts by city or state,\n " +
-                    "11. Sort Address Book By FirstName, 12. Sort addresss book by city or state or zip code)");
+                    "11. Sort Address Book By FirstName, 12. Sort addresss book by city or state or zip code,\n " +
+                    "13. Read or write contacts from text file, 14. Read or write contacts from CSV file)");
                 int selectProgram = Convert.ToInt32(Console.ReadLine());
                 switch (selectProgram)
                 {
@@ -89,6 +90,16 @@ namespace AddressBookManagement
                         string outputTextFilePath = @"G:\BridgeLabz\AddressBookManagement\AddressBookManagement\AddressBooksOutputFile.txt";
                         books.ReadContactsFromTextFile(inputTextFilePath);
                         books.WriteContactsToTextFile(outputTextFilePath);
+                        books.CountByCity("bangalore");
+                        books.CountByState("AndhraPradesh");
+                        break;
+                    case 14:
+                        string inputCsvFilePath = @"G:\BridgeLabz\AddressBookManagement\AddressBookManagement\csvInputFile.csv";
+                        string outputCsvFilePath = @"G:\BridgeLabz\AddressBookManagement\AddressBookManagement\csvOutputFile.csv";
+                        books.ReadContactsFromCsvFile(inputCsvFilePath);
+                        books.WriteContactsToCsvFile(outputCsvFilePath);
+                        books.CountByCity("bangalore");
+                        books.CountByState("AndhraPradesh");
                         break;
                     default:
                         // exit program

@@ -337,37 +337,55 @@ namespace AddressBookManagement
         }
         public void CountByCity(string city)
         {
-            if (citywiseAddressBooks.ContainsKey(city))
+            int a = 0;
+            foreach(var key in addressBooks.Keys)
             {
-                int count = 0;
-                foreach(var key in citywiseAddressBooks[city].Keys)
-                {
-                    count += citywiseAddressBooks[city][key].Count;
-                }
-                Console.WriteLine($"Number of contacts in {city} city are: {count}");
-                Console.WriteLine($"Number of contacts in {city} city are: {citywiseAddressBooks[city].Values.Count}");
+                int b = addressBooks[key].listOfContacts.FindAll(x => x.City == city).Count;
+                Console.WriteLine($"Number of contacts from {city} city in {key}'s address book are: {b}");
+                a += b;
             }
-            else
-            {
-                Console.WriteLine($"There is no contact from the city, {city}");
-            }
+            Console.WriteLine($"Total Number of contacts from {city} city are: {a}");
+
+            //if (citywiseAddressBooks.ContainsKey(city))
+            //{
+            //    int count = 0;
+            //    foreach(var key in citywiseAddressBooks[city].Keys)
+            //    {
+            //        count += citywiseAddressBooks[city][key].Count;
+            //    }
+            //    Console.WriteLine($"Number of contacts in {city} city are: {count}");
+            //    Console.WriteLine($"Number of contacts in {city} city are: {citywiseAddressBooks[city].Values.Count}");
+            //}
+            //else
+            //{
+            //    Console.WriteLine($"There is no contact from the city, {city}");
+            //}
         }
         public void CountByState(string state)
         {
-            if (statewiseAddressBooks.ContainsKey(state))
+            int a = 0;
+            foreach (var key in addressBooks.Keys)
             {
-                int count = 0;
-                foreach (var key in statewiseAddressBooks[state].Keys)
-                {
-                    count += statewiseAddressBooks[state][key].Count;
-                }
-                Console.WriteLine($"Number of contacts in {state} state are: {count}");
-                Console.WriteLine($"Number of contacts in {state} state are: {citywiseAddressBooks[state].Values.Count}");
+                int b = addressBooks[key].listOfContacts.FindAll(x => x.State == state).Count;
+                Console.WriteLine($"Number of contacts from {state} state in {key}'s address book are: {b}");
+                a += b;
             }
-            else
-            {
-                Console.WriteLine($"There is no contact from the state, {state}");
-            }
+            Console.WriteLine($"Total Number of contacts from {state} state are: {a}");
+
+            //if (statewiseAddressBooks.ContainsKey(state))
+            //{
+            //    int count = 0;
+            //    foreach (var key in statewiseAddressBooks[state].Keys)
+            //    {
+            //        count += statewiseAddressBooks[state][key].Count;
+            //    }
+            //    Console.WriteLine($"Number of contacts in {state} state are: {count}");
+            //    Console.WriteLine($"Number of contacts in {state} state are: {citywiseAddressBooks[state].Values.Count}");
+            //}
+            //else
+            //{
+            //    Console.WriteLine($"There is no contact from the state, {state}");
+            //}
         }
         public void SortAddressBookByFirstName()
         {
@@ -452,26 +470,25 @@ namespace AddressBookManagement
                         }
                         owner = line;
                         books = new AddressBooks();
-                        Console.WriteLine($"New owner is {owner}");
                     }
                     line = reader.ReadLine();
                 }
                 addressBooks[owner] = books;
             }
-            foreach (KeyValuePair<string, AddressBooks> keyValuePair in addressBooks.OrderBy(kvp => kvp.Key))
-            {
-                Console.WriteLine($"Contacts in {keyValuePair.Key} after sorting by first name are: ");
-                foreach (var item in keyValuePair.Value.listOfContacts.OrderBy(x => x.FirstName))
-                {
-                    Console.WriteLine($"First Name: {item.FirstName}\nLast Name: {item.SecondName}\n" +
-                        $"Address: {item.Address}\nCity: {item.City}\nState: {item.State}\nZipCode: {item.ZipCode}\n" +
-                        $"Phone number: {item.PhoneNumber}\nEmail id: {item.Email}\n");
-                }
-            }
+            //foreach (KeyValuePair<string, AddressBooks> keyValuePair in addressBooks.OrderBy(kvp => kvp.Key))
+            //{
+            //    Console.WriteLine($"Contacts in {keyValuePair.Key} after sorting by first name are: ");
+            //    foreach (var item in keyValuePair.Value.listOfContacts.OrderBy(x => x.FirstName))
+            //    {
+            //        Console.WriteLine($"First Name: {item.FirstName}\nLast Name: {item.SecondName}\n" +
+            //            $"Address: {item.Address}\nCity: {item.City}\nState: {item.State}\nZipCode: {item.ZipCode}\n" +
+            //            $"Phone number: {item.PhoneNumber}\nEmail id: {item.Email}\n");
+            //    }
+            //}
         }
-        public void WriteContactsToTextFile(string outputFilePath)
+        public void WriteContactsToTextFile(string filePath)
         {
-            using (StreamWriter writer = File.CreateText(outputFilePath))
+            using (StreamWriter writer = File.CreateText(filePath))
             {
                 foreach (KeyValuePair<string, AddressBooks> keyValuePair in addressBooks.OrderBy(kvp => kvp.Key))
                 {
@@ -479,6 +496,55 @@ namespace AddressBookManagement
                     foreach (var item in keyValuePair.Value.listOfContacts.OrderBy(x => x.City).OrderBy(x => x.FirstName))
                     {
                         writer.WriteLine($"{item.FirstName},{item.SecondName},{item.Address},{item.City},{item.State},{item.ZipCode}," +
+                            $"{item.PhoneNumber},{item.Email}");
+                    }
+                }
+            }
+        }
+        public void ReadContactsFromCsvFile(string filePath)
+        {
+            using (StreamReader reader = File.OpenText(filePath))
+            {
+                string line;
+                reader.ReadLine();
+
+                while((line = reader.ReadLine()) != null)
+                {
+                    line = line.Trim();
+                    Contact contact = new Contact();
+                    string owner = line.Split(",")[0];
+                    contact.FirstName = line.Split(",")[1];
+                    contact.SecondName = line.Split(",")[2];
+                    contact.Address = line.Split(",")[3];
+                    contact.City = line.Split(",")[4];
+                    contact.State = line.Split(",")[5];
+                    contact.ZipCode = Convert.ToInt32(line.Split(",")[6]);
+                    contact.PhoneNumber = Convert.ToInt32(line.Split(",")[7]);
+                    contact.Email = line.Split(",")[8];
+                    try
+                    {
+                        addressBooks[owner].listOfContacts.Add(contact);
+                    }
+                    catch(Exception ex)
+                    {
+                        AddressBooks books = new AddressBooks();
+                        books.listOfContacts.Add(contact);
+                        addressBooks.Add(owner, books);
+                    }
+                }
+            }
+        }
+        public void WriteContactsToCsvFile(string filePath)
+        {
+            using (StreamWriter writer = File.CreateText(filePath))
+            {
+                string header = "AddressBookOwnerName,FirstName,LastName,Address,City,State,Zipcode,MobileNumber,Email";
+                writer.WriteLine(header);
+                foreach (KeyValuePair<string, AddressBooks> keyValuePair in addressBooks.OrderBy(kvp => kvp.Key))
+                {
+                    foreach (var item in keyValuePair.Value.listOfContacts.OrderBy(x => x.City).OrderBy(x => x.FirstName))
+                    {
+                        writer.WriteLine($"{keyValuePair.Key},{item.FirstName},{item.SecondName},{item.Address},{item.City},{item.State},{item.ZipCode}," +
                             $"{item.PhoneNumber},{item.Email}");
                     }
                 }
