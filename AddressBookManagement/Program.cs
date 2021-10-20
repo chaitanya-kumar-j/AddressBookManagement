@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 namespace AddressBookManagement
 {
@@ -16,7 +17,8 @@ namespace AddressBookManagement
                     "(1. Create contact list, 2. Add new contact, 3. Edit existing contact,\n " +
                     "4. Delete contact by person name, 5. Add Multiple persons, " +
                     "6. Multiple addressbooks with unique name,\n 7. Ensure no duplicate contact, 8. Search contacts by City or State,\n " +
-                    "9. Search a person from a city or state, 10. count of contacts by city or state,\n 11. Sort Address Book By FirstName)");
+                    "9. Search a person from a city or state, 10. count of contacts by city or state,\n " +
+                    "11. Sort Address Book By FirstName, 12. Sort addresss book by city or state or zip code)");
                 int selectProgram = Convert.ToInt32(Console.ReadLine());
                 switch (selectProgram)
                 {
@@ -73,6 +75,20 @@ namespace AddressBookManagement
                         // Multi Addressbooks
                         books.MultiAddressBook();
                         books.SortAddressBookByFirstName();
+                        break;
+                    case 12:
+                        // Multi Addressbooks
+                        books.MultiAddressBook();
+                        books.SortAddressBookByFirstName();
+                        books.SortAddressBookByCity();
+                        books.SortAddressBookByState();
+                        books.SortAddressBookByZipCode();
+                        break;
+                    case 13:
+                        string inputTextFilePath = @"G:\BridgeLabz\AddressBookManagement\AddressBookManagement\AddressBooksInputFile.txt";
+                        string outputTextFilePath = @"G:\BridgeLabz\AddressBookManagement\AddressBookManagement\AddressBooksOutputFile.txt";
+                        books.ReadContactsFromTextFile(inputTextFilePath);
+                        books.WriteContactsToTextFile(outputTextFilePath);
                         break;
                     default:
                         // exit program

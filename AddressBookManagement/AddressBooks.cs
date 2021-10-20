@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -417,6 +418,69 @@ namespace AddressBookManagement
                     Console.WriteLine($"First Name: {item.FirstName}\nLast Name: {item.SecondName}\n" +
                         $"Address: {item.Address}\nCity: {item.City}\nState: {item.State}\nZipCode: {item.ZipCode}\n" +
                         $"Phone number: {item.PhoneNumber}\nEmail id: {item.Email}\n");
+                }
+            }
+        }
+        public void ReadContactsFromTextFile(string filePath)
+        {
+            string owner = "";
+            AddressBooks books = new AddressBooks();
+            using (StreamReader reader = File.OpenText(filePath))
+            {
+                string line = reader.ReadLine();
+                while (line != null)
+                {
+                    line = line.Trim();
+                    if (line.Split(",").Length > 1)
+                    {
+                        Contact contact = new Contact();
+                        contact.FirstName = line.Split(",")[0];
+                        contact.SecondName = line.Split(",")[1];
+                        contact.Address = line.Split(",")[2];
+                        contact.City = line.Split(",")[3];
+                        contact.State = line.Split(",")[4];
+                        contact.ZipCode = Convert.ToInt32(line.Split(",")[5]);
+                        contact.PhoneNumber = Convert.ToInt32(line.Split(",")[6]);
+                        contact.Email = line.Split(",")[7];
+                        books.listOfContacts.Add(contact);
+                    }
+                    else
+                    {
+                        if (owner != "")
+                        {
+                            addressBooks[owner] = books;
+                        }
+                        owner = line;
+                        books = new AddressBooks();
+                        Console.WriteLine($"New owner is {owner}");
+                    }
+                    line = reader.ReadLine();
+                }
+                addressBooks[owner] = books;
+            }
+            foreach (KeyValuePair<string, AddressBooks> keyValuePair in addressBooks.OrderBy(kvp => kvp.Key))
+            {
+                Console.WriteLine($"Contacts in {keyValuePair.Key} after sorting by first name are: ");
+                foreach (var item in keyValuePair.Value.listOfContacts.OrderBy(x => x.FirstName))
+                {
+                    Console.WriteLine($"First Name: {item.FirstName}\nLast Name: {item.SecondName}\n" +
+                        $"Address: {item.Address}\nCity: {item.City}\nState: {item.State}\nZipCode: {item.ZipCode}\n" +
+                        $"Phone number: {item.PhoneNumber}\nEmail id: {item.Email}\n");
+                }
+            }
+        }
+        public void WriteContactsToTextFile(string outputFilePath)
+        {
+            using (StreamWriter writer = File.CreateText(outputFilePath))
+            {
+                foreach (KeyValuePair<string, AddressBooks> keyValuePair in addressBooks.OrderBy(kvp => kvp.Key))
+                {
+                    writer.WriteLine(keyValuePair.Key);
+                    foreach (var item in keyValuePair.Value.listOfContacts.OrderBy(x => x.City).OrderBy(x => x.FirstName))
+                    {
+                        writer.WriteLine($"{item.FirstName},{item.SecondName},{item.Address},{item.City},{item.State},{item.ZipCode}," +
+                            $"{item.PhoneNumber},{item.Email}");
+                    }
                 }
             }
         }

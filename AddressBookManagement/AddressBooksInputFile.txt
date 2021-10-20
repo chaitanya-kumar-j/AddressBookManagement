@@ -1,0 +1,12 @@
+﻿Chaitanya
+ChandraSekhar,J,asdf,bangalore,Karnataka,534902,9809809,chandrasekhar.j@gmail.com
+Chandrakala,K,cvbn,bangalore,Karnataka,620014,8908908,chandrakala.k@gmail.com
+Ranadheera,V,proddatur,Kadapa,AndhraPradesh,516360,1234567,ranadheera.v@gmail.com
+Chandrayudu
+Vijaya,J,asdf,bangalore,Karnataka,534902,9809809,vijaya.j@gmail.com
+Bhaskar,K,cvbn,Pune,Maharashtra,520014,8908900,bhaskar.k@gmail.com
+Ramu,V,proddatur,Kadapa,AndhraPradesh,516360,1234890,ramu.v@gmail.com
+Kumar
+Chaitanya,J,asdf,oweedj,Rajasthan,934902,9809800,chaitanya.j@gmail.com
+Vijay,K,cvbn,bangalore,Karnataka,720014,8908900,Vijay.k@gmail.com
+Gnaneshwar,V,proddatur,Kadapa,AndhraPradesh,516360,1234890,gnaneshwar.v@gmail.com
