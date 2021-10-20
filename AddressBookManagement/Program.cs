@@ -98,8 +98,17 @@ namespace AddressBookManagement
                         string outputCsvFilePath = @"G:\BridgeLabz\AddressBookManagement\AddressBookManagement\csvOutputFile.csv";
                         books.ReadContactsFromCsvFile(inputCsvFilePath);
                         books.WriteContactsToCsvFile(outputCsvFilePath);
-                        books.CountByCity("bangalore");
-                        books.CountByState("AndhraPradesh");
+                        //books.CountByCity("bangalore");
+                        //books.CountByState("AndhraPradesh");
+                        break;
+                    case 15:
+                        string inputJsonFilePath = @"G:\BridgeLabz\AddressBookManagement\AddressBookManagement\jsonInputFile.json";
+                        string outputJsonFilePath = @"G:\BridgeLabz\AddressBookManagement\AddressBookManagement\jsonOutputFile.json";
+                        books.ReadContactsFromJsonFile(inputJsonFilePath);
+                        books.SortAddressBookByZipCode();
+                        books.WriteContactsToJsonFile(outputJsonFilePath);
+                        //books.CountByCity("bangalore");
+                        //books.CountByState("AndhraPradesh");
                         break;
                     default:
                         // exit program

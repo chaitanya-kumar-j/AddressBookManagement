@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace AddressBookManagement
         List<Contact> listOfContacts = new List<Contact>();
         List<string> cityList = new List<string>();
         List<string> stateList = new List<string>();
-        Dictionary<string, AddressBooks> addressBooks = new Dictionary<string, AddressBooks>();
+        Dictionary<string, List<Contact>> addressBooks = new Dictionary<string, List<Contact>>();
         Dictionary<string, Dictionary<string, List<Contact>>> citywiseAddressBooks = new Dictionary<string, Dictionary<string, List<Contact>>>();
         Dictionary<string, Dictionary<string, List<Contact>>> statewiseAddressBooks = new Dictionary<string, Dictionary<string, List<Contact>>>();
 
@@ -177,7 +178,7 @@ namespace AddressBookManagement
                 {
                     AddressBooks books = new AddressBooks();
                     books.AddMultipleContacts();
-                    addressBooks.Add(ownerName, books);
+                    addressBooks.Add(ownerName, books.listOfContacts);
                     foreach (string city in books.cityList)
                     {
                         List<Contact> cityData = books.listOfContacts.FindAll(c => c.City == city);
@@ -205,10 +206,15 @@ namespace AddressBookManagement
                     numberOfBooks--;
                 }
             }
-            foreach(KeyValuePair<string, AddressBooks> keyValuePair in addressBooks)
+            foreach(var key in addressBooks.Keys)
             {
-                Console.WriteLine($"Contacts in {keyValuePair.Key} are: ");
-                keyValuePair.Value.Display();
+                Console.WriteLine($"Contacts in {key} are: ");
+                foreach (var item in addressBooks[key])
+                {
+                    Console.WriteLine($"First Name: {item.FirstName}\nLast Name: {item.SecondName}\n" +
+                        $"Address: {item.Address}\nCity: {item.City}\nState: {item.State}\nZipCode: {item.ZipCode}\n" +
+                        $"Phone number: {item.PhoneNumber}\nEmail id: {item.Email}\n");
+                }
             }
         }
         // method to find contact from addressbook
@@ -230,14 +236,16 @@ namespace AddressBookManagement
         {
             if (addressBooks.ContainsKey(owner))
             {
-                if (addressBooks[owner].SearchContactInAddressBook(contactName))
+                foreach (Contact contact in addressBooks[owner])
                 {
-                    return true;
+                    if (contact.FirstName == contactName)
+                    {
+                        Console.WriteLine("Contact found...");
+                        return true;
+                    }
                 }
-                else
-                {
-                    return false;
-                }
+                Console.WriteLine("Contact not found in the address book.");
+                return false;
             }
             else
             {
@@ -340,7 +348,7 @@ namespace AddressBookManagement
             int a = 0;
             foreach(var key in addressBooks.Keys)
             {
-                int b = addressBooks[key].listOfContacts.FindAll(x => x.City == city).Count;
+                int b = addressBooks[key].FindAll(x => x.City == city).Count;
                 Console.WriteLine($"Number of contacts from {city} city in {key}'s address book are: {b}");
                 a += b;
             }
@@ -366,7 +374,7 @@ namespace AddressBookManagement
             int a = 0;
             foreach (var key in addressBooks.Keys)
             {
-                int b = addressBooks[key].listOfContacts.FindAll(x => x.State == state).Count;
+                int b = addressBooks[key].FindAll(x => x.State == state).Count;
                 Console.WriteLine($"Number of contacts from {state} state in {key}'s address book are: {b}");
                 a += b;
             }
@@ -389,10 +397,10 @@ namespace AddressBookManagement
         }
         public void SortAddressBookByFirstName()
         {
-            foreach(KeyValuePair<string, AddressBooks> keyValuePair in addressBooks.OrderBy(kvp => kvp.Key))
+            foreach (var kvp in addressBooks.OrderBy(x => x.Key))
             {
-                Console.WriteLine($"Contacts in {keyValuePair.Key} after sorting by first name are: ");
-                foreach (var item in keyValuePair.Value.listOfContacts.OrderBy(x => x.FirstName))
+                Console.WriteLine($"Contacts in {kvp.Key} after sorting by first name are: ");
+                foreach (var item in addressBooks[kvp.Key].OrderBy(x => x.FirstName))
                 {
                     Console.WriteLine($"First Name: {item.FirstName}\nLast Name: {item.SecondName}\n" +
                         $"Address: {item.Address}\nCity: {item.City}\nState: {item.State}\nZipCode: {item.ZipCode}\n" +
@@ -402,10 +410,10 @@ namespace AddressBookManagement
         }
         public void SortAddressBookByCity()
         {
-            foreach (KeyValuePair<string, AddressBooks> keyValuePair in addressBooks.OrderBy(kvp => kvp.Key))
+            foreach (var kvp in addressBooks.OrderBy(x => x.Key))
             {
-                Console.WriteLine($"Contacts in {keyValuePair.Key} after sorting by City are: ");
-                foreach (var item in keyValuePair.Value.listOfContacts.OrderBy(x => x.City))
+                Console.WriteLine($"Contacts in {kvp.Key} after sorting by City are: ");
+                foreach (var item in addressBooks[kvp.Key].OrderBy(x => x.City))
                 {
                     Console.WriteLine($"First Name: {item.FirstName}\nLast Name: {item.SecondName}\n" +
                         $"Address: {item.Address}\nCity: {item.City}\nState: {item.State}\nZipCode: {item.ZipCode}\n" +
@@ -415,10 +423,10 @@ namespace AddressBookManagement
         }
         public void SortAddressBookByState()
         {
-            foreach (KeyValuePair<string, AddressBooks> keyValuePair in addressBooks.OrderBy(kvp => kvp.Key))
+            foreach (var kvp in addressBooks.OrderBy(x => x.Key))
             {
-                Console.WriteLine($"Contacts in {keyValuePair.Key} after sorting by State are: ");
-                foreach (var item in keyValuePair.Value.listOfContacts.OrderBy(x => x.State))
+                Console.WriteLine($"Contacts in {kvp.Key} after sorting by State are: ");
+                foreach (var item in addressBooks[kvp.Key].OrderBy(x => x.State))
                 {
                     Console.WriteLine($"First Name: {item.FirstName}\nLast Name: {item.SecondName}\n" +
                         $"Address: {item.Address}\nCity: {item.City}\nState: {item.State}\nZipCode: {item.ZipCode}\n" +
@@ -428,10 +436,10 @@ namespace AddressBookManagement
         }
         public void SortAddressBookByZipCode()
         {
-            foreach (KeyValuePair<string, AddressBooks> keyValuePair in addressBooks.OrderBy(kvp => kvp.Key))
+            foreach (var kvp in addressBooks.OrderBy(x => x.Key))
             {
-                Console.WriteLine($"Contacts in {keyValuePair.Key} after sorting by ZipCode are: ");
-                foreach (var item in keyValuePair.Value.listOfContacts.OrderBy(x => x.ZipCode))
+                Console.WriteLine($"Contacts in {kvp.Key} after sorting by ZipCode are: ");
+                foreach (var item in addressBooks[kvp.Key].OrderBy(x => x.ZipCode))
                 {
                     Console.WriteLine($"First Name: {item.FirstName}\nLast Name: {item.SecondName}\n" +
                         $"Address: {item.Address}\nCity: {item.City}\nState: {item.State}\nZipCode: {item.ZipCode}\n" +
@@ -442,7 +450,7 @@ namespace AddressBookManagement
         public void ReadContactsFromTextFile(string filePath)
         {
             string owner = "";
-            AddressBooks books = new AddressBooks();
+            List<Contact> newListOfContacts = new List<Contact>();
             using (StreamReader reader = File.OpenText(filePath))
             {
                 string line = reader.ReadLine();
@@ -460,20 +468,20 @@ namespace AddressBookManagement
                         contact.ZipCode = Convert.ToInt32(line.Split(",")[5]);
                         contact.PhoneNumber = Convert.ToInt32(line.Split(",")[6]);
                         contact.Email = line.Split(",")[7];
-                        books.listOfContacts.Add(contact);
+                        newListOfContacts.Add(contact);
                     }
                     else
                     {
                         if (owner != "")
                         {
-                            addressBooks[owner] = books;
+                            addressBooks[owner] = newListOfContacts;
                         }
                         owner = line;
-                        books = new AddressBooks();
+                        newListOfContacts = new List<Contact>();
                     }
                     line = reader.ReadLine();
                 }
-                addressBooks[owner] = books;
+                addressBooks[owner] = newListOfContacts;
             }
             //foreach (KeyValuePair<string, AddressBooks> keyValuePair in addressBooks.OrderBy(kvp => kvp.Key))
             //{
@@ -490,10 +498,10 @@ namespace AddressBookManagement
         {
             using (StreamWriter writer = File.CreateText(filePath))
             {
-                foreach (KeyValuePair<string, AddressBooks> keyValuePair in addressBooks.OrderBy(kvp => kvp.Key))
+                foreach (var kvp in addressBooks.OrderBy(x => x.Key))
                 {
-                    writer.WriteLine(keyValuePair.Key);
-                    foreach (var item in keyValuePair.Value.listOfContacts.OrderBy(x => x.City).OrderBy(x => x.FirstName))
+                    writer.WriteLine(kvp.Key);
+                    foreach (var item in addressBooks[kvp.Key].OrderBy(x => x.City).OrderBy(x => x.FirstName))
                     {
                         writer.WriteLine($"{item.FirstName},{item.SecondName},{item.Address},{item.City},{item.State},{item.ZipCode}," +
                             $"{item.PhoneNumber},{item.Email}");
@@ -523,13 +531,13 @@ namespace AddressBookManagement
                     contact.Email = line.Split(",")[8];
                     try
                     {
-                        addressBooks[owner].listOfContacts.Add(contact);
+                        addressBooks[owner].Add(contact);
                     }
                     catch(Exception ex)
                     {
-                        AddressBooks books = new AddressBooks();
-                        books.listOfContacts.Add(contact);
-                        addressBooks.Add(owner, books);
+                        List<Contact> newListOfContacts = new List<Contact>();
+                        newListOfContacts.Add(contact);
+                        addressBooks.Add(owner, newListOfContacts);
                     }
                 }
             }
@@ -540,14 +548,32 @@ namespace AddressBookManagement
             {
                 string header = "AddressBookOwnerName,FirstName,LastName,Address,City,State,Zipcode,MobileNumber,Email";
                 writer.WriteLine(header);
-                foreach (KeyValuePair<string, AddressBooks> keyValuePair in addressBooks.OrderBy(kvp => kvp.Key))
+                foreach (var kvp in addressBooks.OrderBy(x => x.Key))
                 {
-                    foreach (var item in keyValuePair.Value.listOfContacts.OrderBy(x => x.City).OrderBy(x => x.FirstName))
+                    foreach (var item in addressBooks[kvp.Key].OrderBy(x => x.City).OrderBy(x => x.FirstName))
                     {
-                        writer.WriteLine($"{keyValuePair.Key},{item.FirstName},{item.SecondName},{item.Address},{item.City},{item.State},{item.ZipCode}," +
+                        writer.WriteLine($"{kvp.Key},{item.FirstName},{item.SecondName},{item.Address},{item.City},{item.State},{item.ZipCode}," +
                             $"{item.PhoneNumber},{item.Email}");
                     }
                 }
+            }
+        }
+        public void ReadContactsFromJsonFile(string filePath)
+        {
+            using (StreamReader reader = new StreamReader(filePath))
+            {
+                var json = reader.ReadToEnd();
+                var books = JsonConvert.DeserializeObject<Dictionary<string, List<Contact>>>(json);
+                addressBooks = books;
+            }
+            
+        }
+        public void WriteContactsToJsonFile(string filePath)
+        {
+            using (StreamWriter writer = File.CreateText(filePath))
+            {
+                string result = JsonConvert.SerializeObject(addressBooks);
+                writer.WriteLine(result);
             }
         }
     }
